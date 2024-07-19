@@ -12,50 +12,32 @@ OPTIONS = [
     "مرکزی جمهوری اسلامی ایران", "مسکن", "ملت", "ملی ایران", "شهر"
 ]
 
+BANK_CODES = {
+    "اقتصاد نوین": "055",
+    "پارسیان": "054",
+    "پاسارگاد": "057",
+    "پست بانک ایران": "021",
+    "تجارت": "018",
+    "موسسه اعتباری توسعه": "051",
+    "توسعه صادرات": "019",
+    "رفاه": "013",
+    "سامان": "056",
+    "سپه": "015",
+    "سرمایه": "058",
+    "صادرات ایران": "019",
+    "صنعت و معدن": "011",
+    "کار آفرین": "053",
+    "کشاورزی": "016",
+    "مرکزی جمهوری اسلامی ایران": "010",
+    "مسکن": "014",
+    "ملت": "012",
+    "ملی ایران": "017",
+    "شهر": "061"
+}
+
 
 def on_select_bank(choice):
-    code = ""
-    match choice:
-        case "اقتصاد نوین":
-            code = "055"
-        case "پارسیان":
-            code = "054"
-        case "پاسارگاد":
-            code = "057"
-        case "پست بانک ایران":
-            code = "021"
-        case "تجارت":
-            code = "018"
-        case "موسسه اعتباری توسعه":
-            code = "051"
-        case "توسعه صادرات":
-            code = "019"
-        case "رفاه":
-            code = "013"
-        case "سامان":
-            code = "056"
-        case "سپه":
-            code = "015"
-        case "سرمایه":
-            code = "058"
-        case "صادرات ایران":
-            code = "019"
-        case "صنعت و معدن":
-            code = "011"
-        case "کار آفرین":
-            code = "053"
-        case "کشاورزی":
-            code = "016"
-        case "مرکزی جمهوری اسلامی ایران":
-            code = "010"
-        case "مسکن":
-            code = "014"
-        case "ملت":
-            code = "012"
-        case "ملی ایران":
-            code = "017"
-        case "شهر":
-            code = "061"
+    code = BANK_CODES.get(choice, None)
     bank_code_label.configure(text=code)
 
 
@@ -68,7 +50,7 @@ def calc_sheba_number():
         )
     elif not acc_number_entry.get():
         acc_number_entry.focus_set()
-    elif acc_number_entry.get().isascii():
+    elif not acc_number_entry.get().isdigit():
         tkmb.showerror(
             title="Invalid Acc number",
             message="فیلد شماره حساب فقط شامل عدد می باشد"
