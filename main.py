@@ -66,6 +66,13 @@ def calc_sheba_number():
             title="Invalid bank",
             message="لطفا نام بانک را انتخاب نمایید"
         )
+    elif not acc_number_entry.get():
+        acc_number_entry.focus_set()
+    elif acc_number_entry.get().isascii():
+        tkmb.showerror(
+            title="Invalid Acc number",
+            message="فیلد شماره حساب فقط شامل عدد می باشد"
+        )
     else:
         acc_number = acc_number_entry.get()
         bban = bank_code + acc_number.zfill(19)
@@ -117,7 +124,6 @@ acc_number_entry.configure(width=200)
 acc_number_entry.grid(sticky="w", row=1, column=1)
 
 bank_code_label = ctk.CTkLabel(master=frame, text="")
-# bank_code_label.grid()
 bank_code_label.grid_remove()
 
 calculate_sheba_number_btn = ctk.CTkButton(master=frame, text="محاسبه شماره شبا", command=calc_sheba_number, font=persian_font)
