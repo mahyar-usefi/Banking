@@ -1,6 +1,7 @@
 import customtkinter as ctk
 import tkinter.messagebox as tkmb
-from tkinter import font
+
+from PIL import Image
 
 
 OPTIONS = [
@@ -74,48 +75,67 @@ def calc_sheba_number():
         sheba_number = "IR" + control_number + bban
         sheba_number_label.grid()
         sheba_number_label.configure(text=sheba_number)
+        copy_to_clipboard_btn.grid()
 
 
-ctk.set_appearance_mode("light")
+def copy_to_clipboard():
+    root.clipboard_clear()
+    root.clipboard_append(sheba_number_label.cget("text"))
+    root.update()
+
+
+ctk.set_appearance_mode("dark")
 ctk.set_default_color_theme("blue")
 
 root = ctk.CTk()
 root.resizable(False, False)
-root.geometry("400x400")
-root.eval("tk::PlaceWindow . center")
+root.geometry("600x400+550+250")
 root.title("Convert Acc number to IBAN")
 
-custom_font = ctk.CTkFont(family="Times New Roman Baltic", size=18)
+eng_font = ctk.CTkFont(family="Times New Roman Baltic", size=18)
 persian_font = ctk.CTkFont(family="B Nazanin", size=18)
 
 frame = ctk.CTkFrame(master=root)
-frame.pack(pady=20, padx=30, fill='both', expand=True)
+frame.pack(fill='both', expand=True)
 
+option_menu_label = ctk.CTkLabel(master=frame, text="Bank: ", font=eng_font)
+option_menu_label.grid(sticky="w", row=0, column=0, padx=15, pady=20)
 
-option_menu_label = ctk.CTkLabel(master=frame, text="Bank: ", font=custom_font)
-option_menu_label.grid(row=0, column=0, padx=50, pady=20)
+option_menu_bank = ctk.CTkOptionMenu(
+    master=frame, values=OPTIONS,
+    command=on_select_bank, font=eng_font,
+    dropdown_font=persian_font, anchor="c"
+)
+option_menu_bank.configure(width=200, height=30)
+option_menu_bank.grid(sticky="w", row=0, column=1)
 
-option_menu_bank = ctk.CTkOptionMenu(master=frame, values=OPTIONS, command=on_select_bank, font=custom_font)
-option_menu_bank.grid(row=0, column=1, padx=5, pady=20)
-
-
-acc_number_label = ctk.CTkLabel(master=frame, text="Account Number: ", font=custom_font)
-acc_number_label.grid(row=1, column=0, padx=10, pady=12)
+acc_number_label = ctk.CTkLabel(master=frame, text="Account Number: ", font=eng_font)
+acc_number_label.grid(sticky="w", row=1, column=0, padx=15)
 
 acc_number_entry = ctk.CTkEntry(master=frame)
-acc_number_entry.grid(row=1, column=1, padx=30, pady=12)
+acc_number_entry.configure(width=200)
+acc_number_entry.grid(sticky="w", row=1, column=1)
 
 bank_code_label = ctk.CTkLabel(master=frame, text="")
-bank_code_label.grid(row=2, column=0, columnspan=2, pady=10)
+# bank_code_label.grid()
+bank_code_label.grid_remove()
 
+calculate_sheba_number_btn = ctk.CTkButton(master=frame, text="محاسبه شماره شبا", command=calc_sheba_number, font=persian_font)
+calculate_sheba_number_btn.grid(sticky="e", row=1, column=2, padx=5)
 
-calculate_sheba_number = ctk.CTkButton(master=frame, text="محاسبه شماره شبا", command=calc_sheba_number, font=persian_font)
-calculate_sheba_number.grid(row=2, column=0, columnspan=2, pady=50)
+icon_image = ctk.CTkImage(dark_image=Image.open("icons/copy.png"), size=(20, 20))
 
+copy_to_clipboard_btn = ctk.CTkButton(
+    master=frame, image=icon_image,
+    text="", command=copy_to_clipboard,
+    font=persian_font, width=10
+)
+copy_to_clipboard_btn.grid(row=5, column=2)
+copy_to_clipboard_btn.grid_remove()
 
-sheba_number_label = ctk.CTkLabel(master=frame, text="", font=custom_font)
-sheba_number_label.grid(row=3, column=0, columnspan=2, pady=5)
+sheba_number_label = ctk.CTkLabel(master=frame, text="", font=eng_font)
+sheba_number_label.configure(height=230)
+sheba_number_label.grid(row=5, column=1)
 sheba_number_label.grid_remove()
 
-print(font.families())
 root.mainloop()
